@@ -1,6 +1,6 @@
 baseURL = 'https://woshuaidaile.github.io/'
 locale = 'zh-cn'
-title = '我的博客'
+title = '天下第一帅博客'
 theme = 'PaperMod'
 
 [params]
