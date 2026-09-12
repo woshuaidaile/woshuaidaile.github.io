@@ -1,3 +1,42 @@
-baseURL = 'https://example.org/'
-locale = 'en-us'
-title = 'My New Hugo Project'
+baseURL = 'https://woshuaidaile.github.io/'
+locale = 'zh-cn'
+title = '我的博客'
+theme = 'PaperMod'
+
+[params]
+  author = 'mo'
+  description = '记录我的学习和思考'
+  defaultTheme = 'auto'
+  ShowReadingTime = true
+  ShowShareButtons = true
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+  ShowCodeCopyButtons = true
+  ShowToc = true
+  TocOpen = false
+
+  [params.homeInfoParams]
+    Title = '欢迎来到我的博客'
+    Content = '这里记录我的学习和思考。'
+
+[[menu.main]]
+  name = '文章'
+  url = '/posts/'
+  weight = 10
+
+[[menu.main]]
+  name = '标签'
+  url = '/tags/'
+  weight = 20
+
+[[menu.main]]
+  name = '关于'
+  url = '/about/'
+  weight = 30
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    noClasses = false
