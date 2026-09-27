@@ -11,3 +11,6 @@ Thumbs.db
 .vscode/
 *.swp
 *.bak
+
+# Hugo 构建锁文件
+.hugo_build.lock
