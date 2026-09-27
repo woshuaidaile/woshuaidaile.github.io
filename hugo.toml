@@ -38,5 +38,11 @@ theme = 'PaperMod'
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
+    # ★ 数学公式直通：让 $...$ 和 $$...$$ 原样传给 KaTeX，不被 Markdown 破坏
+    [markup.goldmark.extensions.passthrough]
+      enable = true
+      [markup.goldmark.extensions.passthrough.delimiters]
+        block = [['\[', '\]'], ['$$', '$$']]
+        inline = [['\(', '\)'], ['$', '$']]
   [markup.highlight]
     noClasses = false
