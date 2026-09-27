@@ -38,6 +38,7 @@ theme = 'PaperMod'
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
+      hardWraps = true
     # ★ 数学公式直通：让 $...$ 和 $$...$$ 原样传给 KaTeX，不被 Markdown 破坏
     [markup.goldmark.extensions.passthrough]
       enable = true

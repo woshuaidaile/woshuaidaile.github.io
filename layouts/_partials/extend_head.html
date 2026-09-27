@@ -1,16 +1,29 @@
-{{- /* ===== KaTeX 数学公式支持（自托管，不依赖外部 CDN） ===== */ -}}
+{{- /* ========== 数学公式 + 中文自动排版 ========== */ -}}
 {{- if .IsPage -}}
 <link rel="stylesheet" href="{{ "katex/katex.min.css" | relURL }}">
 <script defer src="{{ "katex/katex.min.js" | relURL }}"></script>
-<script defer src="{{ "katex/contrib/auto-render.min.js" | relURL }}"
-  onload="renderMathInElement(document.body, {
-    delimiters: [
-      {left: '$$', right: '$$', display: true},
-      {left: '$',  right: '$',  display: false},
-      {left: '\\[', right: '\\]', display: true},
-      {left: '\\(', right: '\\)', display: false}
-    ],
-    throwOnError: false,
-    ignoredTags: ['script','noscript','style','textarea','pre','code','option']
-  });"></script>
+<script defer src="{{ "katex/contrib/auto-render.min.js" | relURL }}"></script>
+<script defer src="{{ "js/pangu.umd.js" | relURL }}"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  /* ---- 第 1 步：先渲染数学公式 ---- */
+  if (typeof renderMathInElement === "function") {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$",  right: "$",  display: false},
+        {left: "\\[", right: "\\]", display: true},
+        {left: "\\(", right: "\\)", display: false}
+      ],
+      throwOnError: false,
+      ignoredTags: ["script","noscript","style","textarea","pre","code","option"]
+    });
+  }
+  /* ---- 第 2 步：再跑「盘古之白」（必须在公式渲染之后，
+         否则会在 $...$ 源码里插空格，破坏公式） ---- */
+  if (window.pangu && typeof window.pangu.autoSpacePage === "function") {
+    window.pangu.autoSpacePage();
+  }
+});
+</script>
 {{- end -}}
