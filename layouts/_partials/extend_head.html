@@ -1,5 +1,6 @@
 {{- /* ========== 数学公式 + 中文自动排版 ========== */ -}}
-{{- if .IsPage -}}
+{{- /* 所有页面都加载：文章详情页、首页、列表页都要能渲染公式 */ -}}
+{{- if or .IsPage .IsHome .IsSection -}}
 <link rel="stylesheet" href="{{ "katex/katex.min.css" | relURL }}">
 <script defer src="{{ "katex/katex.min.js" | relURL }}"></script>
 <script defer src="{{ "katex/contrib/auto-render.min.js" | relURL }}"></script>
