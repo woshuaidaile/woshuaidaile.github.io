@@ -49,7 +49,9 @@ enableRobotsTXT = true
   ShowCodeCopyButtons = true
 
   # ---------- 目录 ----------
-  ShowToc = true
+  # ★ 关掉 Hugo 自动目录（目录改成写在文章 md 文件里，代码看得见）
+  #   文章里的目录格式:  <!-- TOC --> ... <!-- /TOC -->
+  ShowToc = false
   TocOpen = false
 
   # ---------- ★ 相关文章推荐（新增）----------
