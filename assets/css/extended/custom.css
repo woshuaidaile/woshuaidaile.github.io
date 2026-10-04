@@ -8,7 +8,7 @@
    一、CSS 变量（主题色，改这里就能换配色）
    ============================================================ */
 :root {
-  --accent: #6366f1;              /* 主色调（靛蓝） */
+  --accent: #6365ec;              /* 主色调（靛蓝） */
   --accent-2: #8b5cf6;            /* 渐变副色（紫） */
   --accent-glow: rgba(99, 102, 241, 0.25);
   --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
@@ -17,9 +17,9 @@
 }
 
 .dark {
-  --accent: #818cf8;
+  --accent: #7b83c9;
   --accent-2: #a78bfa;
-  --accent-glow: rgba(129, 140, 248, 0.2);
+  --accent-glow: rgba(126, 137, 237, 0.2);
   --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   --card-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
