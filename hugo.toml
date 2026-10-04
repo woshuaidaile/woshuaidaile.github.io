@@ -4,13 +4,12 @@
 # ============================================================
 
 baseURL = 'https://woshuaidaile.github.io/'
-locale = 'zh-cn'
+locale = 'zh-CN'                   # 语言/地区（Hugo 0.158+ 用 locale 代替 languageCode）
 title = '天下第一帅博客'
 theme = 'PaperMod'
 
-# ★★★ 语言设置（缺这两个的话界面文字会显示英文！）
-defaultContentLanguage = 'zh'      # 用 i18n/zh.yaml 的中文翻译
-languageCode = 'zh-CN'             # <html lang="zh-CN">，利于中文 SEO
+# ★★★ 语言设置（缺这个界面文字会显示英文！）
+defaultContentLanguage = 'zh'      # 用主题 i18n/zh.yaml 的中文翻译
 
 # 每页显示几篇文章
 paginate = 8

@@ -626,10 +626,13 @@
 }
 
 /* ============================================================
-   十八、写在 md 文件里的目录（<!-- TOC --> ... <!-- /TOC -->）
+   十八、写在 md 文件里的目录
+   结构:  ## 目录  +  <!-- TOC --> 列表 <!-- /TOC -->
    ★ 用 :has() 精确选中「整列都是锚点链接」的列表，不影响普通列表
+   ★ 「目录」标题和目录列表合并成【一张卡片】，只留一根蓝竖条
    ============================================================ */
 
+/* ---- 情况 B：目录前面没有标题时，目录自己成一张卡片 ---- */
 .post-content > ul:has(> li > a[href^="#"]) {
   list-style: none;
   padding: 16px 22px 16px 24px;
@@ -641,6 +644,32 @@
   box-shadow: var(--card-shadow);
   font-size: 0.95em;
   line-height: 1.9;
+}
+
+/* ---- 情况 A-1：目录列表前面有「## 目录」标题 → 标题当作卡片头部 ----
+   :has(+ ul > li > a) 的意思是「紧跟着的那个 ul 是目录列表」         */
+.post-content > h2:has(+ ul > li > a[href^="#"]) {
+  margin: 0;
+  padding: 13px 22px 6px 24px;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-bottom: none;
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: var(--code-bg);
+  box-shadow: none;
+  font-size: 1.02em;
+  font-weight: 600;
+  color: var(--secondary);
+  letter-spacing: 0.08em;
+}
+
+/* ---- 情况 A-2：标题下面那个目录列表 → 接上标题，去掉上边框和上圆角 ---- */
+.post-content > h2:has(+ ul > li > a[href^="#"]) + ul:has(> li > a[href^="#"]) {
+  margin-top: 0;
+  margin-bottom: 2.2em;
+  padding-top: 8px;
+  border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius);
 }
 
 .post-content > ul:has(> li > a[href^="#"]) > li {
