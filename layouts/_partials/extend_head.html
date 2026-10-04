@@ -1,4 +1,20 @@
-{{- /* ========== 数学公式 + 中文自动排版 ========== */ -}}
+{{- /* ============================================================
+       自定义 head 内容
+       ① favicon（💻 图标）
+       ② KaTeX 数学公式
+       ③ 盘古之白（中英文自动加空格）
+       ============================================================ */ -}}
+
+{{- /* ---------- ① Favicon ---------- */ -}}
+<link rel="icon" type="image/png" sizes="32x32" href="{{ "favicon-32x32.png" | relURL }}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ "favicon-16x16.png" | relURL }}">
+<link rel="shortcut icon" href="{{ "favicon.ico" | relURL }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ "apple-touch-icon.png" | relURL }}">
+<link rel="manifest" href="{{ "site.webmanifest" | relURL }}">
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-title" content="mo 的博客">
+
+{{- /* ---------- ②③ 数学公式 + 中文排版 ---------- */ -}}
 {{- /* 所有页面都加载：文章详情页、首页、列表页都要能渲染公式 */ -}}
 {{- if or .IsPage .IsHome .IsSection -}}
 <link rel="stylesheet" href="{{ "katex/katex.min.css" | relURL }}">

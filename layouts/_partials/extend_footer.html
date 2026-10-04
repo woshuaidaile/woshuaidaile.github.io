@@ -1,0 +1,108 @@
+{{- /* ============================================================
+       页脚增强脚本
+       ① 阅读进度条
+       ② 图片点击放大
+       ③ 外链新窗口打开
+       ============================================================ */ -}}
+
+{{- if .IsPage -}}
+<script>
+(function () {
+  'use strict';
+
+  /* ---------- ① 阅读进度条 ---------- */
+  var bar = document.createElement('div');
+  bar.id = 'reading-progress';
+  document.body.appendChild(bar);
+
+  function updateProgress() {
+    var doc = document.documentElement;
+    var scrollTop = window.pageYOffset || doc.scrollTop || 0;
+    var scrollHeight = doc.scrollHeight - doc.clientHeight;
+    var percent = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    bar.style.width = Math.min(100, Math.max(0, percent)) + '%';
+  }
+
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  window.addEventListener('resize', updateProgress);
+  updateProgress();
+
+  /* ---------- ② 图片点击放大 ---------- */
+  var imgs = document.querySelectorAll('.post-content img');
+  imgs.forEach(function (img) {
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', function (e) {
+      e.preventDefault();
+      openLightbox(img.src, img.alt);
+    });
+  });
+
+  function openLightbox(src, alt) {
+    var overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(0,0,0,0.9)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'cursor:zoom-out', 'padding:24px',
+      'opacity:0', 'transition:opacity .25s'
+    ].join(';');
+
+    var big = document.createElement('img');
+    big.src = src;
+    big.alt = alt || '';
+    big.style.cssText = [
+      'max-width:96%', 'max-height:96%',
+      'border-radius:10px',
+      'box-shadow:0 20px 60px rgba(0,0,0,.6)',
+      'transform:scale(.96)', 'transition:transform .25s'
+    ].join(';');
+
+    overlay.appendChild(big);
+    document.body.appendChild(overlay);
+    document.body.style.overflow = 'hidden';
+
+    requestAnimationFrame(function () {
+      overlay.style.opacity = '1';
+      big.style.transform = 'scale(1)';
+    });
+
+    function close() {
+      overlay.style.opacity = '0';
+      big.style.transform = 'scale(.96)';
+      document.body.style.overflow = '';
+      setTimeout(function () {
+        if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+      }, 250);
+    }
+
+    overlay.addEventListener('click', close);
+    document.addEventListener('keydown', function esc(e) {
+      if (e.key === 'Escape') {
+        close();
+        document.removeEventListener('keydown', esc);
+      }
+    });
+  }
+
+  /* ---------- ③ 外链新窗口打开 ---------- */
+  var links = document.querySelectorAll('.post-content a[href^="http"]');
+  links.forEach(function (a) {
+    if (a.hostname && a.hostname !== window.location.hostname) {
+      a.setAttribute('target', '_blank');
+      a.setAttribute('rel', 'noopener noreferrer');
+    }
+  });
+
+  /* ---------- ④ 目录自动展开到当前章节（可选） ---------- */
+  var toc = document.querySelector('.toc');
+  if (toc && !toc.open) {
+    // 只在文章较长时自动展开
+    var headings = document.querySelectorAll('.post-content h2, .post-content h3');
+    if (headings.length > 6) {
+      toc.open = true;
+    }
+  }
+
+})();
+</script>
+{{- end -}}

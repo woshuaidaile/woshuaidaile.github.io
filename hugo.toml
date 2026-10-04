@@ -1,28 +1,110 @@
+# ============================================================
+#  Hugo 站点配置
+#  https://woshuaidaile.github.io/
+# ============================================================
+
 baseURL = 'https://woshuaidaile.github.io/'
 locale = 'zh-cn'
 title = '天下第一帅博客'
 theme = 'PaperMod'
 
+# 每页显示几篇文章
+paginate = 8
+
+# 生成 robots.txt
+enableRobotsTXT = true
+
+# ★★★ 搜索功能：首页额外输出 JSON（Fuse.js 读取）
+[outputs]
+  home = ['HTML', 'RSS', 'JSON']
+  section = ['HTML', 'RSS']
+
+# ============================================================
+#  ★ 参数配置
+# ============================================================
 [params]
   author = 'mo'
   description = '记录我的学习和思考'
+
+  # ---------- ★ 主内容区（缺少这个首页/归档页会没有文章！）----------
+  mainSections = ['posts']
+
+  # ---------- 主题与外观 ----------
   defaultTheme = 'auto'
-  ShowReadingTime = true
+  disableThemeToggle = false
+
+  # ---------- 文章元信息 ----------
+  ShowReadingTime = true          # ★ 阅读时间
+  ShowWordCount = true            # ★ 字数统计（新增）
   ShowShareButtons = true
   ShowPostNavLinks = true
   ShowBreadCrumbs = true
   ShowCodeCopyButtons = true
+  ShowFullTextinRSS = true
+
+  # ---------- 目录 ----------
   ShowToc = true
   TocOpen = false
 
-  [params.homeInfoParams]
-    Title = '欢迎来到我的博客'
-    Content = '这里记录我的学习和思考。'
+  # ---------- ★ 相关文章推荐（新增）----------
+  ShowRelatedContent = true
+  [params.related]
+    threshold = 60
+    includeNewer = true
+    toLower = false
+    [[params.related.indices]]
+      name = 'tags'
+      weight = 100
+    [[params.related.indices]]
+      name = 'categories'
+      weight = 70
+    [[params.related.indices]]
+      name = 'title'
+      weight = 50
 
+  # ---------- ★ 首页个人主页模式（Profile Mode，带头像）----------
+  [params.profileMode]
+    enabled = true
+    title = 'mo'
+    subtitle = '网络空间安全 · 学习笔记'
+    imageUrl = '/images/avatar.jpg'
+    imageWidth = 150
+    imageHeight = 150
+    imageTitle = 'mo 的头像'
+
+    [[params.profileMode.buttons]]
+      name = '📄 文章'
+      url = '/posts/'
+    [[params.profileMode.buttons]]
+      name = '🗂️ 归档'
+      url = '/archives/'
+    [[params.profileMode.buttons]]
+      name = '🔍 搜索'
+      url = '/search/'
+    [[params.profileMode.buttons]]
+      name = '👤 关于'
+      url = '/about/'
+
+  # ---------- ★ 社交图标（新增）----------
+  [[params.socialIcons]]
+    name = 'github'
+    url = 'https://github.com/woshuaidaile'
+  [[params.socialIcons]]
+    name = 'rss'
+    url = 'index.xml'
+
+# ============================================================
+#  菜单
+# ============================================================
 [[menu.main]]
   name = '文章'
   url = '/posts/'
   weight = 10
+
+[[menu.main]]
+  name = '归档'
+  url = '/archives/'
+  weight = 15
 
 [[menu.main]]
   name = '标签'
@@ -30,20 +112,47 @@ theme = 'PaperMod'
   weight = 20
 
 [[menu.main]]
+  name = '搜索'
+  url = '/search/'
+  weight = 25
+
+[[menu.main]]
   name = '关于'
   url = '/about/'
   weight = 30
 
+# ============================================================
+#  Markdown 渲染
+# ============================================================
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
       hardWraps = true
-    # ★ 数学公式直通：让 $...$ 和 $$...$$ 原样传给 KaTeX，不被 Markdown 破坏
+
+    # ★ 数学公式直通：让 $...$ 和 $$...$$ 原样传给 KaTeX
     [markup.goldmark.extensions.passthrough]
       enable = true
       [markup.goldmark.extensions.passthrough.delimiters]
         block = [['\[', '\]'], ['$$', '$$']]
         inline = [['\(', '\)'], ['$', '$']]
+
+  # ---------- 目录收录范围 ----------
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 4
+    ordered = false
+
+  # ---------- 代码高亮 ----------
   [markup.highlight]
     noClasses = false
+    lineNos = false
+    codeFences = true
+    guessSyntax = true
+
+# ============================================================
+#  RSS
+# ============================================================
+[services]
+  [services.rss]
+    limit = 20

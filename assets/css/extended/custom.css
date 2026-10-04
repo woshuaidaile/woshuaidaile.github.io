@@ -1,8 +1,33 @@
 /* ============================================================
-   中文排版优化 + 保留手写排版
+   博客美化样式（全套升级版）
+   文件: assets/css/extended/custom.css
+   PaperMod 会自动加载这个文件
    ============================================================ */
 
-/* 正文：更适合中文阅读的字号与行高 */
+/* ============================================================
+   一、CSS 变量（主题色，改这里就能换配色）
+   ============================================================ */
+:root {
+  --accent: #6366f1;              /* 主色调（靛蓝） */
+  --accent-2: #8b5cf6;            /* 渐变副色（紫） */
+  --accent-glow: rgba(99, 102, 241, 0.25);
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --card-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.1);
+  --radius: 12px;
+}
+
+.dark {
+  --accent: #818cf8;
+  --accent-2: #a78bfa;
+  --accent-glow: rgba(129, 140, 248, 0.2);
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --card-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================================
+   二、中文排版（保留原有优化）
+   ============================================================ */
+
 .post-content {
   font-size: 17px;
   line-height: 1.9;
@@ -10,62 +35,593 @@
   word-break: break-word;
 }
 
-/* 段落：保留换行、保留连续空格（你手写的对齐/缩进不会丢） */
 .post-content p {
   margin: 0 0 1.1em;
   white-space: pre-wrap;
 }
 
-/* 公式自己锁 nowrap，但外层容器要还原，避免 KaTeX 生成的换行被当成换行 */
-.post-content .katex-display {
-  white-space: normal;
-}
-.post-content .katex {
-  white-space: nowrap;
-}
+.post-content .katex-display { white-space: normal; }
+.post-content .katex { white-space: nowrap; }
+.katex { letter-spacing: normal; }
+.pangu { margin: 0 0.04em; }
 
-/* 标题层级 */
+/* ============================================================
+   三、标题美化（带渐变色小竖条）
+   ============================================================ */
+
 .post-content h2 {
-  margin-top: 2.2em;
-  margin-bottom: 0.9em;
-  padding-bottom: 0.35em;
+  margin-top: 2.4em;
+  margin-bottom: 1em;
+  padding-bottom: 0.4em;
+  padding-left: 14px;
   border-bottom: 1px solid var(--border);
-  font-size: 1.4em;
+  border-left: 4px solid var(--accent);
+  font-size: 1.45em;
+  line-height: 1.4;
+  position: relative;
 }
-.post-content h3 { margin-top: 1.8em; margin-bottom: 0.6em; font-size: 1.2em; }
-.post-content h4 { margin-top: 1.5em; margin-bottom: 0.5em; font-size: 1.05em; }
 
-/* 列表 */
+.post-content h3 {
+  margin-top: 2em;
+  margin-bottom: 0.7em;
+  padding-left: 10px;
+  border-left: 3px solid var(--accent);
+  font-size: 1.22em;
+}
+
+.post-content h4 {
+  margin-top: 1.6em;
+  margin-bottom: 0.5em;
+  font-size: 1.08em;
+  color: var(--accent);
+}
+
+/* 文章大标题：渐变文字 */
+.post-title {
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* ============================================================
+   四、列表 / 引用 / 表格
+   ============================================================ */
+
 .post-content ul,
 .post-content ol { line-height: 1.9; margin: 0 0 1.1em; padding-left: 1.6em; }
 .post-content li { margin-bottom: 0.4em; }
 
-/* 引用块 */
+/* 列表项前面的小三角改成主题色 */
+.post-content ul li::marker { color: var(--accent); }
+.post-content ol li::marker { color: var(--accent); font-weight: 600; }
+
+/* 引用块：加圆角 + 背景 */
 .post-content blockquote {
-  margin: 1.2em 0;
-  padding: 0.6em 1em;
-  border-left: 3px solid var(--primary);
-  opacity: 0.9;
+  margin: 1.4em 0;
+  padding: 0.9em 1.2em;
+  border-left: 4px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--code-bg);
+  opacity: 0.95;
+}
+.post-content blockquote p:last-child { margin-bottom: 0; }
+
+/* 表格：圆角 + 斑马纹 + 悬停高亮 */
+.post-content table {
+  display: block;
+  overflow-x: auto;
+  margin: 1.4em 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.95em;
 }
 
-/* 代码块：保持原样，不受 pre-wrap 影响 */
-.post-content pre,
+.post-content th {
+  background: var(--code-bg);
+  font-weight: 600;
+  padding: 0.7em 1em;
+  border-bottom: 2px solid var(--border);
+}
+
+.post-content td {
+  padding: 0.6em 1em;
+  border-bottom: 1px solid var(--border);
+}
+
+.post-content tr:last-child td { border-bottom: none; }
+.post-content tbody tr { transition: background 0.15s; }
+.post-content tbody tr:hover { background: var(--code-bg); }
+
+/* ============================================================
+   五、代码块：Mac 风格窗口
+   ============================================================ */
+
+.post-content pre {
+  position: relative;
+  margin: 1.6em 0;
+  padding: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #282c34 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* 代码块顶部的"标题栏" */
+.post-content pre::before {
+  content: '';
+  display: block;
+  height: 34px;
+  background: #21252b;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* 三个小圆点 */
+.post-content pre::after {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ff5f56;
+  box-shadow: 18px 0 0 #ffbd2e, 36px 0 0 #27c93f;
+}
+
+/* 代码内容 */
 .post-content pre code {
+  display: block;
+  padding: 1em 1.2em;
   white-space: pre;
   overflow-x: auto;
+  font-size: 0.9em;
+  line-height: 1.7;
+  background: transparent !important;
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, 'Microsoft YaHei', monospace;
+}
+
+/* 复制按钮位置（避开圆点） */
+.post-content .copy-code-button {
+  top: 6px !important;
+  right: 10px !important;
+  border-radius: 6px;
 }
 
 /* 行内代码 */
 .post-content p code,
-.post-content li code { padding: 0.15em 0.35em; border-radius: 3px; font-size: 0.92em; }
+.post-content li code,
+.post-content td code {
+  padding: 0.15em 0.45em;
+  border-radius: 5px;
+  font-size: 0.9em;
+  background: var(--code-bg);
+  color: var(--accent);
+  border: 1px solid var(--border);
+}
 
-/* 表格 */
-.post-content table { display: block; overflow-x: auto; margin: 1.2em 0; border-collapse: collapse; }
-.post-content th,
-.post-content td { padding: 0.5em 0.9em; border: 1px solid var(--border); }
+/* ============================================================
+   六、图片美化（圆角 + 阴影 + 悬停放大）
+   ============================================================ */
 
-/* 「盘古之白」插入的空格 */
-.pangu { margin: 0 0.04em; }
+.post-content img {
+  border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: block;
+  margin: 1.6em auto;
+  max-width: 100%;
+}
 
-/* 公式不继承中文的 letter-spacing */
-.katex { letter-spacing: normal; }
+.post-content img:hover {
+  transform: scale(1.02);
+  box-shadow: var(--card-shadow-hover);
+}
+
+/* ============================================================
+   七、文章列表：卡片化
+   ============================================================ */
+
+.post-entry {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  margin-bottom: 16px;
+  background: var(--entry);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 卡片左侧主题色竖条 */
+.post-entry::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.post-entry:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--card-shadow-hover);
+  border-color: var(--accent);
+}
+
+.post-entry:hover::before { opacity: 1; }
+
+.entry-header h2 {
+  font-size: 1.25em;
+  margin: 0 0 6px;
+  transition: color 0.2s;
+}
+
+.post-entry:hover .entry-header h2 { color: var(--accent); }
+
+.entry-content {
+  margin: 8px 0;
+  font-size: 0.92em;
+  color: var(--secondary);
+  line-height: 1.7;
+}
+
+.entry-footer {
+  font-size: 0.82em;
+  color: var(--secondary);
+  margin-top: 10px;
+}
+
+/* ============================================================
+   八、首页简介卡片
+   ============================================================ */
+
+.home-info {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 30px;
+  margin-bottom: 30px;
+  background: var(--entry);
+  box-shadow: var(--card-shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.home-info::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+
+.home-info .entry-header h1 {
+  font-size: 1.6em;
+  margin-bottom: 12px;
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.home-info .entry-content {
+  font-size: 0.98em;
+  line-height: 1.9;
+}
+
+/* ============================================================
+   九、目录美化
+   ============================================================ */
+
+.toc {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--code-bg);
+  padding: 0;
+  margin-bottom: 30px;
+  overflow: hidden;
+}
+
+.toc summary {
+  padding: 12px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+  list-style: none;
+}
+
+.toc summary::-webkit-details-marker { display: none; }
+
+.toc summary::before {
+  content: '▸ ';
+  color: var(--accent);
+  display: inline-block;
+  transition: transform 0.2s;
+}
+
+.toc[open] summary::before { content: '▾ '; }
+
+.toc summary:hover { background: var(--tertiary); }
+
+.toc .inner {
+  padding: 4px 18px 16px;
+  margin: 0;
+}
+
+.toc ul { padding-left: 1.2em; }
+.toc li { margin: 4px 0; }
+.toc a {
+  color: var(--secondary);
+  transition: color 0.15s, padding-left 0.15s;
+  display: inline-block;
+}
+.toc a:hover {
+  color: var(--accent);
+  padding-left: 4px;
+}
+
+/* ============================================================
+   十、标签 / 分类
+   ============================================================ */
+
+.post-tags a,
+.entry-footer a {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2px 12px;
+  font-size: 0.85em;
+  transition: all 0.2s;
+  display: inline-block;
+  margin: 2px 4px 2px 0;
+}
+
+.post-tags a:hover,
+.entry-footer a:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   十一、链接
+   ============================================================ */
+
+.post-content a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.post-content a:hover {
+  border-bottom-color: var(--accent);
+}
+
+/* ============================================================
+   十二、阅读进度条
+   ============================================================ */
+
+#reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  z-index: 9999;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+/* ============================================================
+   十三、滚动条美化
+   ============================================================ */
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--theme); }
+::-webkit-scrollbar-thumb {
+  background: var(--tertiary);
+  border-radius: 5px;
+  border: 2px solid var(--theme);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ============================================================
+   十四、返回顶部按钮
+   ============================================================ */
+
+.top-link {
+  border-radius: 50%;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.top-link:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+/* ============================================================
+   十五、动画（淡入）
+   ============================================================ */
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.post-entry,
+.home-info,
+.post-content {
+  animation: fadeInUp 0.4s ease both;
+}
+
+/* 依次淡入（前 8 篇） */
+.post-entry:nth-child(1) { animation-delay: 0.02s; }
+.post-entry:nth-child(2) { animation-delay: 0.06s; }
+.post-entry:nth-child(3) { animation-delay: 0.10s; }
+.post-entry:nth-child(4) { animation-delay: 0.14s; }
+.post-entry:nth-child(5) { animation-delay: 0.18s; }
+.post-entry:nth-child(6) { animation-delay: 0.22s; }
+.post-entry:nth-child(7) { animation-delay: 0.26s; }
+.post-entry:nth-child(8) { animation-delay: 0.30s; }
+
+/* ============================================================
+   十六、其他细节
+   ============================================================ */
+
+/* 水平分割线 */
+.post-content hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 2.5em 0;
+}
+
+/* 键盘按键样式（<kbd>） */
+.post-content kbd {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  padding: 2px 7px;
+  font-size: 0.85em;
+  font-family: inherit;
+}
+
+/* 相关文章 */
+.related-posts {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.related-posts h2 {
+  font-size: 1.1em;
+  color: var(--secondary);
+  margin-bottom: 14px;
+}
+.related-posts ul { list-style: none; padding-left: 0; }
+.related-posts li {
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--border);
+}
+.related-posts li:last-child { border-bottom: none; }
+.related-posts a { color: var(--accent); }
+
+/* 归档页年份 */
+.archive-year {
+  font-size: 1.3em;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 24px 0 10px;
+}
+
+/* 搜索框 */
+#searchbox input {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+#searchbox input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+  outline: none;
+}
+
+/* 选中文字的颜色 */
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* ============================================================
+   十七、首页个人主页卡片（profileMode）
+   ============================================================ */
+
+.profile {
+  padding: 40px 0 20px;
+}
+
+.profile_inner img {
+  border-radius: 50%;
+  border: 3px solid var(--border);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile_inner img:hover {
+  transform: scale(1.05) rotate(-2deg);
+  box-shadow: 0 12px 36px var(--accent-glow);
+}
+
+.profile_inner h1 {
+  font-size: 1.9em;
+  margin: 16px 0 6px;
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.profile_inner span {
+  color: var(--secondary);
+  font-size: 0.95em;
+  letter-spacing: 0.05em;
+}
+
+/* 个人主页下方的按钮 */
+.profile_inner .buttons {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.profile_inner .button {
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 8px 20px;
+  background: var(--entry);
+  transition: all 0.22s ease;
+  box-shadow: var(--card-shadow);
+}
+
+.profile_inner .button:hover {
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  border-color: transparent;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px var(--accent-glow);
+}
+
+.profile_inner .button:hover .button-inner {
+  color: #fff;
+}
+
+.profile_inner .button-inner {
+  font-size: 0.9em;
+  font-weight: 500;
+  transition: color 0.22s;
+}
+
+/* 首页「最新文章」小标题 */
+.home-section-title {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: var(--secondary);
+  margin: 34px 0 14px;
+  padding-left: 12px;
+  border-left: 4px solid var(--accent);
+  letter-spacing: 0.05em;
+}
+
