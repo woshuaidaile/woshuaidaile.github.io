@@ -2,8 +2,8 @@
 date = '2026-10-04T15:44:00+08:00'
 draft = false
 title = 'web第二周周报'
-tags = ['web','web安全的核心基础漏洞','SQL注入']
-categories = ['Linux基础']
+tags = ['web','web安全的核心基础漏洞']
+categories = ['Linux基础','SQL注入']
 +++
 
 ## 目录
