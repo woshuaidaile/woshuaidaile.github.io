@@ -15,9 +15,12 @@ paginate = 8
 enableRobotsTXT = true
 
 # ★★★ 搜索功能：首页额外输出 JSON（Fuse.js 读取）
+#     不输出 RSS（用户不需要订阅源，所以所有页面都只输出 HTML）
 [outputs]
-  home = ['HTML', 'RSS', 'JSON']
-  section = ['HTML', 'RSS']
+  home = ['HTML', 'JSON']
+  section = ['HTML']
+  taxonomy = ['HTML']
+  term = ['HTML']
 
 # ============================================================
 #  ★ 参数配置
@@ -40,7 +43,6 @@ enableRobotsTXT = true
   ShowPostNavLinks = true
   ShowBreadCrumbs = true
   ShowCodeCopyButtons = true
-  ShowFullTextinRSS = true
 
   # ---------- 目录 ----------
   ShowToc = true
@@ -85,13 +87,10 @@ enableRobotsTXT = true
       name = '👤 关于'
       url = '/about/'
 
-  # ---------- ★ 社交图标（新增）----------
+  # ---------- ★ 社交图标 ----------
   [[params.socialIcons]]
     name = 'github'
     url = 'https://github.com/woshuaidaile'
-  [[params.socialIcons]]
-    name = 'rss'
-    url = 'index.xml'
 
 # ============================================================
 #  菜单
@@ -149,10 +148,3 @@ enableRobotsTXT = true
     lineNos = false
     codeFences = true
     guessSyntax = true
-
-# ============================================================
-#  RSS
-# ============================================================
-[services]
-  [services.rss]
-    limit = 20

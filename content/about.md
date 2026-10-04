@@ -38,7 +38,6 @@ ShowToc: false
 ## 📬 联系我
 
 - **GitHub**：[woshuaidaile](https://github.com/woshuaidaile)
-- **RSS 订阅**：[/index.xml](/index.xml)
 
 ---
 
