@@ -672,14 +672,84 @@
   border-radius: 0 0 var(--radius) var(--radius);
 }
 
+/* ============================================================
+   ★ 目录的分级显示
+   风格:
+       一级   1. 标题        （数字编号 + 加粗）
+       二级     - 标题       （短横 + 缩进）
+       三级       - 标题     （短横 + 更深缩进）
+       四级         - 标题
+   用 CSS counter 自动编号，不需要改 markdown 源码
+   ============================================================ */
+
+/* 给目录开一个计数器 */
+.post-content > ul:has(> li > a[href^="#"]) {
+  counter-reset: toc-l1;
+}
+
+/* ---------- 一级：1. 2. 3. + 加粗 ---------- */
 .post-content > ul:has(> li > a[href^="#"]) > li {
+  margin: 4px 0;
+  counter-increment: toc-l1;
+}
+
+.post-content > ul:has(> li > a[href^="#"]) > li::before {
+  content: counter(toc-l1) '.';
+  color: var(--accent);
+  font-weight: 700;
+  margin-right: 8px;
+  min-width: 1.4em;
+  display: inline-block;
+}
+
+.post-content > ul:has(> li > a[href^="#"]) > li > a {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* ---------- 二级及更深：短横 - ---------- */
+.post-content > ul:has(> li > a[href^="#"]) ul {
+  padding-left: 1em;
+  margin: 2px 0 2px 0.6em;
+}
+
+.post-content > ul:has(> li > a[href^="#"]) ul > li {
   margin: 2px 0;
 }
 
-/* 二级及更深的目录条目 */
+.post-content > ul:has(> li > a[href^="#"]) ul > li::before {
+  content: '-';
+  color: var(--secondary);
+  margin-right: 7px;
+  display: inline-block;
+}
+
+/* 三级用更浅的颜色 */
+.post-content > ul:has(> li > a[href^="#"]) ul ul {
+  padding-left: 1em;
+  margin-left: 0.2em;
+}
+
+.post-content > ul:has(> li > a[href^="#"]) ul ul > li::before {
+  color: var(--secondary);
+  opacity: 0.6;
+}
+
+/* 四级及更深 */
+.post-content > ul:has(> li > a[href^="#"]) ul ul ul {
+  padding-left: 0.9em;
+}
+
+.post-content > ul:has(> li > a[href^="#"]) ul ul ul > li::before {
+  opacity: 0.45;
+}
+
+/* 二级及更深的字号稍微小一点 */
 .post-content > ul:has(> li > a[href^="#"]) ul {
-  padding-left: 1.2em;
-  margin: 2px 0;
+  font-size: 0.96em;
+}
+.post-content > ul:has(> li > a[href^="#"]) ul ul {
+  font-size: 0.96em;
 }
 
 .post-content > ul:has(> li > a[href^="#"]) a {
