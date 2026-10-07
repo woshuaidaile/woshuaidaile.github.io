@@ -1,7 +1,7 @@
 +++
 date = '2026-10-04T13:25:00+08:00'
 draft = false
-title = 'AI完成的登录页面 —— 手把手教学笔记'
+title = '（配合Webd第一周周报食用）AI完成的登录页面 —— 手把手教学笔记'
 tags = ['Flask', 'Python', 'Web', '安全', 'SQL注入']
 categories = ['学习笔记']
 +++
